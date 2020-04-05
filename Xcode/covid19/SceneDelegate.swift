@@ -18,6 +18,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+
+        let newsController = NewsViewController(tab: Constant.news, key: Constant.apiKey)
+        newsController.tabBarItem.image = UIImage(systemName: Constant.news.imageSystemName)
+
+        let navigationController = UINavigationController(rootViewController: newsController)
+
+        let bnoDeskTweetsController = TweetsViewController(tab: Constant.bno)
+        bnoDeskTweetsController.tabBarItem.image = UIImage(systemName: Constant.bno.imageSystemName)
+
+        let tweetsController = TweetsViewController(tab: Constant.twitter)
+        tweetsController.tabBarItem.image = UIImage(systemName: Constant.twitter.imageSystemName)
+
+        let tabController = UITabBarController()
+        tabController.viewControllers = [navigationController, bnoDeskTweetsController, tweetsController]
+
+        window?.rootViewController = tabController
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -50,4 +72,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
-
