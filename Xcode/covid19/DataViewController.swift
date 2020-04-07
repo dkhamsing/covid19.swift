@@ -57,14 +57,23 @@ class DataViewController: UIViewController {
 
     private func loadData() {
         spinner.startAnimating()
-        getData(trackerApiStringUrl) { r in
-            self.countries = r.locations.sorted(by: { $0.latest.confirmed > $1.latest.confirmed })
-            self.collectionView?.reloadData()
+        getData(trackerApiStringUrl) { result, error in
             self.spinner.stopAnimating()
+            if let r = result {
+                self.countries = r.locations.sorted(by: { $0.latest.confirmed > $1.latest.confirmed })
+                self.collectionView?.reloadData()
+
+            }
+            if let e = error {
+                let alertvc = UIAlertController.init(title: nil, message: e.localizedDescription, preferredStyle: .alert)
+                let action = UIAlertAction.init(title: "OK", style: .default, handler: nil)
+                alertvc.addAction(action)
+                self.present(alertvc, animated: true, completion: nil)
+            }
         }
     }
 
-    private func getData(_ urlString: String, completion: @escaping (Response) -> Void) {
+    private func getData(_ urlString: String, completion: @escaping (Response?, Error?) -> Void) {
         guard let url = URL.init(string: urlString) else {
             print("error with url")
             return
@@ -84,15 +93,32 @@ class DataViewController: UIViewController {
 
             if let result = try? JSONDecoder().decode(Response.self, from: unwrapped) {
                 DispatchQueue.main.async {
-                    completion(result)
+                    completion(result, nil)
                 }
             }
             else {
                 print("could not decode json")
+                let e: ApiError = .generic
+                DispatchQueue.main.async {
+                    completion(nil, e)
+                }
             }
         }
 
         task.resume()
+    }
+}
+
+enum ApiError: Error {
+    case generic
+}
+
+extension ApiError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .generic:
+            return NSLocalizedString("Could not retrieve data.", comment: "")
+        }
     }
 }
 
