@@ -9,11 +9,10 @@
 import Foundation
 
 struct Constant {
-    static let apiKey = "8815d577462a4195a64f6f50af3ada08"
-
+    static let data = Tab.init(name: "Cases", imageSystemName: "chart.bar")
     static let news = Tab.init(name: "Health News", imageSystemName: "dot.radiowaves.left.and.right")
-    static let bno = Tab.init(name: "Tweets by BNO News", imageSystemName: "b.circle", twitterUser: "BNODesk")
-    static let twitter = Tab.init(name: "Tweets by Daniel Sinclair", imageSystemName: "person.circle", twitterUser: "_DanielSinclair")
+    static let bno = Tab.init(name: "BNO News", imageSystemName: "b.circle", twitterUser: "BNODesk")
+    static let twitter = Tab.init(name: "Daniel Sinclair", imageSystemName: "person.circle", twitterUser: "_DanielSinclair")
 }
 
 struct Tab {

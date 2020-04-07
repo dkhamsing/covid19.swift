@@ -24,10 +24,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
-        let newsController = NewsViewController(tab: Constant.news, key: Constant.apiKey)
-        newsController.tabBarItem.image = UIImage(systemName: Constant.news.imageSystemName)
+        let dataController = DataViewController()
+        dataController.tabBarItem.image = UIImage(systemName: Constant.data.imageSystemName)
+        let dataNavigationController = UINavigationController(rootViewController: dataController)
 
-        let navigationController = UINavigationController(rootViewController: newsController)
+        let newsController = NewsViewController(tab: Constant.news)
+        newsController.tabBarItem.image = UIImage(systemName: Constant.news.imageSystemName)
+        let newsNavigationController = UINavigationController(rootViewController: newsController)
 
         let bnoDeskTweetsController = TweetsViewController(tab: Constant.bno)
         bnoDeskTweetsController.tabBarItem.image = UIImage(systemName: Constant.bno.imageSystemName)
@@ -36,7 +39,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tweetsController.tabBarItem.image = UIImage(systemName: Constant.twitter.imageSystemName)
 
         let tabController = UITabBarController()
-        tabController.viewControllers = [navigationController, bnoDeskTweetsController, tweetsController]
+        tabController.viewControllers = [
+            dataNavigationController,
+            newsNavigationController,
+            bnoDeskTweetsController,
+            tweetsController
+        ]
 
         window?.rootViewController = tabController
         window?.makeKeyAndVisible()

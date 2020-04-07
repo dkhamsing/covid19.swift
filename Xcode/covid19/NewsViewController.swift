@@ -10,20 +10,19 @@ import UIKit
 import SafariServices
 
 class NewsViewController: UIViewController {
-    private var articles: [Article] = []
-
+    // UI
     private var collectionView: UICollectionView?
 
     private let refreshControl = UIRefreshControl()
 
-    private var apiKey: String = ""
+    // Data
+    private let apiKey = "8815d577462a4195a64f6f50af3ada08"
+    private var articles: [Article] = []
 
-    init(tab: Tab, key: String) {
+    init(tab: Tab) {
         super.init(nibName: nil, bundle:nil)
 
         title = tab.name
-
-        apiKey = key
     }
 
     required init?(coder: NSCoder) {
@@ -33,22 +32,31 @@ class NewsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView?.backgroundColor = .white
-        collectionView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        setup()
+        configure()
+        getData()
+    }
 
+    private func setup() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView?.register(NewsCell.self, forCellWithReuseIdentifier: NewsCell.cellId)
+        collectionView?.backgroundColor = .white
+
+        collectionView?.dataSource = self
+        collectionView?.delegate = self
+
+        refreshControl.addTarget(self, action: #selector(getData), for: UIControl.Event.valueChanged)
+    }
+
+    private func configure() {
+        // Collection view
+        collectionView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
         if let cv = collectionView {
             view.addSubview(cv)
         }
 
-        collectionView?.dataSource = self
-        collectionView?.delegate = self
-
-        refresh()
-
-        refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        // Refresh control
         collectionView?.addSubview(refreshControl)
     }
 
@@ -70,15 +78,44 @@ class NewsViewController: UIViewController {
         return layout
     }
 
-    @objc private func refresh() {
-        let api = NewsApi()
-        api.get("https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)&category=health") { articles in
+    @objc private func getData() {        
+        get("https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)&category=health") { articles in
             self.articles = articles
 
             self.collectionView?.reloadData()
 
             self.refreshControl.endRefreshing()
         }
+    }
+
+    private func get(_ urlString: String, completion: @escaping ([Article]) -> Void) {
+        guard let url = URL.init(string: urlString) else {
+            print("get url error")
+            return
+        }
+
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { data, _, error in
+            if let error = error {
+
+                print(error)
+                return
+            }
+
+            guard let unwrapped = data else {
+                print("error unwrapping data")
+
+                return
+            }
+
+            if let result = try? JSONDecoder().decode(Headline.self, from: unwrapped) {
+                DispatchQueue.main.async {
+                    completion(result.articles)
+                }
+            }
+        }
+
+        task.resume()
     }
 }
 
