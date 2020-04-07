@@ -49,7 +49,7 @@ class DataViewController: UIViewController {
     private func setup() {
         title = Constant.data.name
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "id")
+        collectionView?.register(BarCell.self, forCellWithReuseIdentifier: BarCell.cellId)
         collectionView?.register(DataView.self, forSupplementaryViewOfKind: DataViewController.sectionHeaderElementKind, withReuseIdentifier: DataView.viewId)
         collectionView?.backgroundColor = .white
         collectionView?.dataSource = self
@@ -108,10 +108,10 @@ extension DataViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 10)
 
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .estimated(150))
+                                                      heightDimension: .estimated(120))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
             elementKind: DataViewController.sectionHeaderElementKind, alignment: .top)
@@ -125,7 +125,9 @@ extension DataViewController {
 
 extension DataViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        let country = countries[section]
+
+        return country.count()
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -133,7 +135,10 @@ extension DataViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "id", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BarCell.cellId, for: indexPath) as! BarCell
+
+        let country = self.countries[indexPath.section]
+        cell.height = country.height(index: indexPath.row, height: 44)
 
         return cell
     }
@@ -146,6 +151,91 @@ extension DataViewController: UICollectionViewDataSource {
         cell.label.attributedText = country.confirmedAttributedText()
 
         return cell
+    }
+}
+
+private extension Country {
+    func confirmedAttributedText() -> NSAttributedString {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .right
+
+        let titleAttribute: [NSAttributedString.Key: Any] = [
+            .paragraphStyle: paragraphStyle,
+            .font: UIFont.monospacedSystemFont(ofSize: 80, weight: .regular)
+        ]
+
+        return NSMutableAttributedString.init(string: "\(latest.confirmed)", attributes: titleAttribute)
+    }
+}
+
+extension Country {
+    static let lastNumDays = 27
+
+    func count() -> Int {
+        Country.lastNumDays
+    }
+
+    func height(index: Int, height: CGFloat) -> CGFloat {
+        let cases = self.newCases()
+
+        let confirmed = cases[index]
+        if let max = cases.max() {
+          return CGFloat(confirmed) * height / CGFloat(max)
+        }
+
+        return 0
+    }
+
+    func newCases() -> [Int] {
+        var diff: [Int] = []
+
+        let dict = timelines.confirmed.timeline
+
+        let sorted = Array(dict.keys).sorted(by: { $1 > $0 })
+        let s = sorted.suffix(Country.lastNumDays + 1)
+        let keys = Array(s)
+
+        if var prev: Int = dict[keys[0]] {
+            for (k) in keys {
+                if let v = dict[k] {
+                    let d = v - prev
+                    diff.append(d)
+                    prev = v
+                }
+            }
+        }
+
+        let diffSuffix = diff.suffix(Country.lastNumDays)
+        return Array(diffSuffix)
+    }
+}
+
+class BarCell: UICollectionViewCell {
+    static let cellId = "BarCell"
+
+    let barView = UIView()
+
+    var height: CGFloat = 44
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        barView.backgroundColor = .red
+
+        self.addSubview(barView)
+        barView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+                barView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                barView.heightAnchor.constraint(equalToConstant: height),
+                barView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                barView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            ])
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        barView.removeConstraints(barView.constraints)
     }
 }
 
@@ -181,19 +271,5 @@ class DataView: UICollectionReusableView {
 
         dateLabel.attributedText = nil
         label.attributedText = nil
-    }
-}
-
-private extension Country {
-    func confirmedAttributedText() -> NSAttributedString {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .right
-
-        let titleAttribute: [NSAttributedString.Key: Any] = [
-            .paragraphStyle: paragraphStyle,
-            .font: UIFont.monospacedSystemFont(ofSize: 80, weight: .regular)
-        ]
-
-        return NSMutableAttributedString.init(string: "\(latest.confirmed)", attributes: titleAttribute)
     }
 }
