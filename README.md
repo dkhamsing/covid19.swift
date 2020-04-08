@@ -1,10 +1,10 @@
 ## covid19.swift
 
-Quick iOS app to show some COVID-19 / health data, news and tweets :zap:
+Small iOS app to show some COVID-19 / health data, news and tweets :zap:
 
 <img src=Images/0.png height=400> <img src=Images/1.png height=400> <img src=Images/2.png height=400>
 
-<img src=Images/3.png height=400> <img src=Images/4.png height=400>
+<img src=Images/3.png height=400> <img src=Images/4.png height=400> <img src=Images/5.png height=400>
 
 ## Requirements
 
@@ -16,6 +16,8 @@ iOS 13 for [Collection View Compositional Layouts](https://developer.apple.com/d
 - [News API](https://newsapi.org)
 - [BNO Newsroom](https://twitter.com/BNODesk)
 - [Daniel Sinclair](https://twitter.com/_DanielSinclair)
+- [viruscovid.tech](https://viruscovid.tech)
+- [ncov2019.live](https://ncov2019.live)
 
 ## Contact
 

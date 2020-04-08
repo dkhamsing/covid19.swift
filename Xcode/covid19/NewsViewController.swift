@@ -65,7 +65,8 @@ class NewsViewController: UIViewController {
                                               heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let inset: CGFloat = 15
-        item.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: inset, bottom: 0, trailing: inset)
+        let sideInset: CGFloat = 30
+        item.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: sideInset, bottom: 0, trailing: sideInset)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                heightDimension: .absolute(250))

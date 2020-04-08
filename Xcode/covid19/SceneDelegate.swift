@@ -24,13 +24,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
+        let webController = WebViewController()
+        webController.tabBarItem.image = UIImage(systemName: Constant.web.imageSystemName)
+        webController.tabBarItem.title = Constant.web.name
+        let webNavigationController = UINavigationController(rootViewController: webController)
+        webNavigationController.navigationBar.prefersLargeTitles = true
+
         let dataController = DataViewController()
         dataController.tabBarItem.image = UIImage(systemName: Constant.data.imageSystemName)
+        dataController.tabBarItem.title = Constant.data.name
         let dataNavigationController = UINavigationController(rootViewController: dataController)
+        dataNavigationController.navigationBar.prefersLargeTitles = true
 
         let newsController = NewsViewController(tab: Constant.news)
         newsController.tabBarItem.image = UIImage(systemName: Constant.news.imageSystemName)
         let newsNavigationController = UINavigationController(rootViewController: newsController)
+        newsNavigationController.navigationBar.prefersLargeTitles = true
 
         let bnoDeskTweetsController = TweetsViewController(tab: Constant.bno)
         bnoDeskTweetsController.tabBarItem.image = UIImage(systemName: Constant.bno.imageSystemName)
@@ -40,6 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let tabController = UITabBarController()
         tabController.viewControllers = [
+            webNavigationController,
             dataNavigationController,
             newsNavigationController,
             bnoDeskTweetsController,

@@ -48,6 +48,7 @@ class DataViewController: UIViewController {
 
     private func setup() {
         title = Constant.data.name
+
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
         collectionView?.register(BarCell.self, forCellWithReuseIdentifier: BarCell.cellId)
         collectionView?.register(DataView.self, forSupplementaryViewOfKind: DataViewController.sectionHeaderElementKind, withReuseIdentifier: DataView.viewId)
@@ -134,7 +135,7 @@ extension DataViewController {
 
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 5
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 30, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 10)
 
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: .estimated(120))
@@ -187,15 +188,24 @@ private extension Country {
 
         let titleAttribute: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
-            .font: UIFont.monospacedSystemFont(ofSize: 80, weight: .regular)
+            .font: UIFont.monospacedSystemFont(ofSize: 65, weight: .regular)
         ]
 
-        return NSMutableAttributedString.init(string: "\(latest.confirmed)", attributes: titleAttribute)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+
+        let num = NSNumber.init(value: latest.confirmed)
+
+        if let s = numberFormatter.string(from: num) {
+            return NSAttributedString.init(string: s, attributes: titleAttribute)
+        }
+
+        return NSAttributedString()
     }
 }
 
 extension Country {
-    static let lastNumDays = 27
+    static let lastNumDays = 24
 
     func count() -> Int {
         Country.lastNumDays
