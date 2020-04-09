@@ -9,22 +9,6 @@
 import UIKit
 
 extension Article {
-    func content() -> String {
-        if let source = self.source, let description = self.description {
-            var desc = description
-            if desc != "" {
-                desc = "\(desc)\n"
-            }
-
-            var text = "\(self.title ?? "")\n\(desc)\(source.name ?? "")"
-            text = text.escapeHtml()
-
-            return text
-        }
-
-        return ""
-    }
-
     func attributedDate() -> NSAttributedString {
         guard let publishedAt = self.publishedAt else {
             return NSAttributedString()
@@ -41,47 +25,36 @@ extension Article {
             .foregroundColor: UIColor.gray
         ]
 
-        return NSAttributedString(string: "\(date.timeAgoSinceDate())\n", attributes: attribute)
+        return NSAttributedString(string: "\(date.timeAgoSinceDate())", attributes: attribute)
     }
 
-    func attributedContent() -> NSAttributedString {
+    func attributedSource() -> NSAttributedString {
         guard let source = self.source,
-            let name = source.name,
-            let description = self.description,
-            let title = self.title else {
+            let name = source.name else {
                 return NSAttributedString()
         }
 
-        var desc = description.escapeHtml()
+        let attribute: [NSAttributedString.Key: Any] = [
+            .font: UIFont.systemFont(ofSize: 13),
+            .foregroundColor: UIColor.gray
+        ]
 
-        // Handle when description is empty.
-        if desc != "" {
-            desc = "\(desc)\n"
-        }
+        return NSAttributedString(string: "\(name)", attributes: attribute)
+    }
 
+    func attributedContent() -> NSAttributedString {
         let titleAttribute: [NSAttributedString.Key: Any] = [
             .font: UIFont.boldSystemFont(ofSize: 16),
             .foregroundColor: UIColor.white
         ]
-        let a = NSMutableAttributedString.init(string: "\(title)\n", attributes: titleAttribute)
+        let a = NSMutableAttributedString.init(string: "\(title ?? "")\n", attributes: titleAttribute)
 
         let whiteColorAttribute: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 14),
             .foregroundColor: UIColor.white
         ]
-        let b =  NSAttributedString.init(string: desc, attributes: whiteColorAttribute)
+        let b =  NSAttributedString.init(string: description ?? content ?? "", attributes: whiteColorAttribute)
         a.append(b)
-
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .right
-        let nameAttribute: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.lightGray,
-            .paragraphStyle: paragraphStyle,
-            .font: UIFont.systemFont(ofSize: 13)
-        ]
-
-        let c = NSAttributedString.init(string: "\(name)", attributes: nameAttribute)
-        a.append(c)
 
         return a
     }

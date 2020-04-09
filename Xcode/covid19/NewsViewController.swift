@@ -69,17 +69,18 @@ class NewsViewController: UIViewController {
         item.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: sideInset, bottom: 0, trailing: sideInset)
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                               heightDimension: .absolute(250))
+                                               heightDimension: .absolute(280))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize,
                                                        subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: sideInset, trailing: 0)
 
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
 
-    @objc private func getData() {        
+    @objc private func getData() {
         get("https://newsapi.org/v2/top-headlines?country=us&apiKey=\(apiKey)&category=health") { articles in
             self.articles = articles
 
@@ -133,6 +134,7 @@ extension NewsViewController: UICollectionViewDataSource {
         c.urlString = article.urlToImage
         c.label.attributedText = article.attributedContent()
         c.dateLabel.attributedText = article.attributedDate()
+        c.sourceLabel.attributedText = article.attributedSource()
 
         return c
     }

@@ -138,7 +138,7 @@ extension DataViewController {
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 30, trailing: 10)
 
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
-                                                      heightDimension: .estimated(120))
+                                                      heightDimension: .estimated(85))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
             elementKind: DataViewController.sectionHeaderElementKind, alignment: .top)
@@ -164,6 +164,8 @@ extension DataViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BarCell.cellId, for: indexPath) as! BarCell
 
+        cell.row = indexPath.section
+
         let country = self.countries[indexPath.section]
         cell.height = country.height(index: indexPath.row, height: 44)
 
@@ -173,21 +175,30 @@ extension DataViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let cell = collectionView.dequeueReusableSupplementaryView(ofKind: DataViewController.sectionHeaderElementKind, withReuseIdentifier: DataView.viewId, for: indexPath) as! DataView
 
+        cell.row = indexPath.section
+
         let country = self.countries[indexPath.section]
-        cell.dateLabel.text = country.country
-        cell.label.attributedText = country.confirmedAttributedText()
+        cell.countryLabel.text = country.country
+        cell.casesLabel.attributedText = country.confirmedAttributedText(indexPath.section)
 
         return cell
     }
 }
 
+private extension UIColor {
+    static func colorForRow(_ row: Int) -> UIColor {
+        return row % 2 == 0 ? .red : UIColor.systemPink
+    }
+}
+
 private extension Country {
-    func confirmedAttributedText() -> NSAttributedString {
+    func confirmedAttributedText(_ row: Int) -> NSAttributedString {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .right
 
         let titleAttribute: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
+            .foregroundColor: UIColor.colorForRow(row),
             .font: UIFont.monospacedSystemFont(ofSize: 65, weight: .regular)
         ]
 
@@ -249,6 +260,8 @@ extension Country {
 class BarCell: UICollectionViewCell {
     static let cellId = "BarCell"
 
+    var row = 0
+
     let barView = UIView()
 
     var height: CGFloat = 44
@@ -256,7 +269,7 @@ class BarCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        barView.backgroundColor = .red
+        barView.backgroundColor = UIColor.colorForRow(row)
 
         self.addSubview(barView)
         barView.translatesAutoresizingMaskIntoConstraints = false
@@ -278,34 +291,38 @@ class BarCell: UICollectionViewCell {
 class DataView: UICollectionReusableView {
     static let viewId = "DataCell"
 
-    let label = UILabel()
-    let dateLabel = UILabel()
+    var row = 0
+
+    let countryLabel = UILabel()
+    let casesLabel = UILabel()
 
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.addSubview(dateLabel)
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        countryLabel.textColor = UIColor.colorForRow(row)
 
-        self.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(countryLabel)
+        countryLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        self.addSubview(casesLabel)
+        casesLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            dateLabel.topAnchor.constraint(equalTo: self.topAnchor),
-            dateLabel.heightAnchor.constraint(equalToConstant: 25),
-            dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            countryLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            countryLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            countryLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
 
-            label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
+            casesLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            casesLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            casesLabel.heightAnchor.constraint(equalToConstant: 60),
+            casesLabel.topAnchor.constraint(equalTo: countryLabel.bottomAnchor)
         ])
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        dateLabel.attributedText = nil
-        label.attributedText = nil
+        countryLabel.attributedText = nil
+        casesLabel.attributedText = nil
     }
 }

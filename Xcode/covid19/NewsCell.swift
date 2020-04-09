@@ -23,9 +23,9 @@ class NewsCell: UICollectionViewCell {
     }
 
     private let imageView = UIImageView()
-    private let colorView = UIView()
     let label = UILabel()
     let dateLabel = UILabel()
+    let sourceLabel = UILabel()
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -33,11 +33,11 @@ class NewsCell: UICollectionViewCell {
         contentView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        contentView.addSubview(colorView)
-        colorView.translatesAutoresizingMaskIntoConstraints = false
-
         contentView.addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        contentView.addSubview(sourceLabel)
+        sourceLabel.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,16 +46,14 @@ class NewsCell: UICollectionViewCell {
             dateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             dateLabel.heightAnchor.constraint(equalToConstant: 25),
             dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+            sourceLabel.topAnchor.constraint(equalTo:contentView.topAnchor),
+            sourceLabel.heightAnchor.constraint(equalToConstant: 25),
+            sourceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
             label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-
-            colorView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor),
-            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            colorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             imageView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -69,7 +67,9 @@ class NewsCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        imageView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         imageView.image = nil
+
         label.attributedText = nil
     }
 
@@ -82,9 +82,9 @@ class NewsCell: UICollectionViewCell {
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
 
-        colorView.layer.cornerRadius = cornerRadius
-        colorView.layer.masksToBounds = true
-        colorView.backgroundColor = .black
-        colorView.alpha = 0.7
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = imageView.bounds
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        imageView.layer.insertSublayer(gradientLayer, at: 0)
     }
 }
