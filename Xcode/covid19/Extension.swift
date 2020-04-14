@@ -8,122 +8,71 @@
 
 import UIKit
 
-extension Article {
-    func attributedDate() -> NSAttributedString {
-        guard let publishedAt = self.publishedAt else {
-            return NSAttributedString()
-        }
-
-        let f = ISO8601DateFormatter()
-        let da = f.date(from: publishedAt)
-        guard let date = da else {
-            return NSAttributedString()
-        }
-
-        let attribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 13),
-            .foregroundColor: UIColor.gray
-        ]
-
-        return NSAttributedString(string: "\(date.timeAgoSinceDate())", attributes: attribute)
-    }
-
-    func attributedSource() -> NSAttributedString {
-        guard let source = self.source,
-            let name = source.name else {
-                return NSAttributedString()
-        }
-
-        let attribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 13),
-            .foregroundColor: UIColor.gray
-        ]
-
-        return NSAttributedString(string: "\(name)", attributes: attribute)
-    }
-
-    func attributedContent() -> NSAttributedString {
-        let titleAttribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 16),
-            .foregroundColor: UIColor.white
-        ]
-        let a = NSMutableAttributedString.init(string: "\(title ?? "")\n", attributes: titleAttribute)
-
-        let whiteColorAttribute: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14),
-            .foregroundColor: UIColor.white
-        ]
-        let b =  NSAttributedString.init(string: description ?? content ?? "", attributes: whiteColorAttribute)
-        a.append(b)
-
-        return a
+extension UIColor {
+    static func colorFor(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
+        return UIColor(red: red/255.0, green: green/255.0, blue: blue/255.0, alpha: 1)
     }
 }
 
-// Credits: https://stackoverflow.com/questions/34457434/swift-convert-time-to-time-ago
-extension Date {
-    func timeAgoSinceDate() -> String {
-        // From Time
-        let fromDate = self
-
-        // To Time
-        let toDate = Date()
-
-        // Estimation
-        // Year
-        if let interval = Calendar.current.dateComponents([.year], from: fromDate, to: toDate).year, interval > 0  {
-
-            return interval == 1 ? "\(interval)" + " " + "year ago" : "\(interval)" + " " + "years ago"
-        }
-
-        // Month
-        if let interval = Calendar.current.dateComponents([.month], from: fromDate, to: toDate).month, interval > 0  {
-
-            return interval == 1 ? "\(interval)" + " " + "month ago" : "\(interval)" + " " + "months ago"
-        }
-
-        // Day
-        if let interval = Calendar.current.dateComponents([.day], from: fromDate, to: toDate).day, interval > 0  {
-
-            return interval == 1 ? "\(interval)" + " " + "day ago" : "\(interval)" + " " + "days ago"
-        }
-
-        // Hours
-        if let interval = Calendar.current.dateComponents([.hour], from: fromDate, to: toDate).hour, interval > 0 {
-
-            return interval == 1 ? "\(interval)" + " " + "hour ago" : "\(interval)" + " " + "hours ago"
-        }
-
-        // Minute
-        if let interval = Calendar.current.dateComponents([.minute], from: fromDate, to: toDate).minute, interval > 0 {
-
-            return interval == 1 ? "\(interval)" + " " + "minute ago" : "\(interval)" + " " + "minutes ago"
-        }
-
-        return "a moment ago"
+extension UIView {
+    func autolayoutAddSubview(_ view: UIView) {
+        self.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
     }
 }
 
-extension String {
-    func escapeHtml() -> String {
-        var text = self
-        text = text.replacingOccurrences(of: "<p>", with: "")
-        text = text.replacingOccurrences(of: "</p>", with: "")
-        text = text.replacingOccurrences(of: "&rsquot;", with: "")
-
-        return text
+extension UIViewController {
+    func presentOkAlertWithMessage(_ message: String) {
+        let alertvc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertvc.addAction(action)
+        self.present(alertvc, animated: true, completion: nil)
     }
 }
 
-extension UIImageView {
-    func setImageWithURL(_ url: URL?) {
-        DispatchQueue.global().async { [weak self] in
-            if let url = url,
-                let data = try? Data(contentsOf: url) {
-                DispatchQueue.main.async { [weak self] in
-                    self?.image = UIImage(data: data)
+extension URL {
+    func get<T: Codable>(type: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
+        let session = URLSession.shared
+        let task = session.dataTask(with: self) { data, _, error in
+            if let _ = error {
+                DispatchQueue.main.async {
+                    completion(.failure(.generic))
+                }
+                return
+            }
+            
+            guard let unwrapped = data else {
+                DispatchQueue.main.async {
+                    completion(.failure(.generic))
+                }
+                return
+            }
+            
+            if let result = try? JSONDecoder().decode(type, from: unwrapped) {
+                DispatchQueue.main.async {
+                    completion(.success(result))
                 }
             }
+            else {
+                DispatchQueue.main.async {
+                    completion(.failure(.generic))
+                }
+            }
+        }
+        
+        task.resume()
+    }
+}
+
+enum ApiError: Error {
+    case generic
+}
+
+extension ApiError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .generic:
+            return NSLocalizedString("Could not retrieve data.", comment: "")
         }
     }
 }

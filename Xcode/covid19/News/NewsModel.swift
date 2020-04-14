@@ -9,8 +9,6 @@
 import Foundation
 
 struct Headline: Codable {
-    var status: String?
-    var totalResults: Int?
     var articles: [Article]
 }
 
@@ -18,13 +16,18 @@ struct Article: Codable {
     var title: String?
     var description: String?
     var content: String?
-    var url: String?
-    var urlToImage: String?
+    var url: URL?
+    var urlToImage: URL?
     var publishedAt: String?
-
     var source: Source?
 }
 
 struct Source: Codable {
     var name: String?
+}
+
+extension Article {
+    var descriptionOrContent: String? {
+        return description ?? content
+    }
 }
