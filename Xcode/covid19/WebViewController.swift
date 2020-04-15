@@ -15,19 +15,22 @@ class WebViewController: UIViewController {
     private var spinner = UIActivityIndicatorView(style: .medium)
     
     // Data
-    private var websites = [
-        Website(domain: "viruscovid.tech", urlString: "https://viruscovid.tech"),
-        Website(domain: "ncov2019.live", urlString: "https://ncov2019.live")
-    ]
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    var websites: [Website] = []
+
+    init(_ sites: [Website]) {
+        super.init(nibName: nil, bundle:nil)
+
+        websites = sites
+
         setup()
         configure()
         loadData()
     }
-    
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "estimatedProgress" {
             if webview.estimatedProgress == 1 {
@@ -76,10 +79,12 @@ private extension WebViewController {
         // Web view
         view = webview
         
-        // Filter button
-        let image = UIImage(systemName: "list.dash")
-        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(filter))
-        navigationItem.rightBarButtonItem = button
+        // Select website button
+        let image = UIImage(systemName: "ellipsis")
+        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(selectWebsite))
+        if websites.count > 1 {
+            navigationItem.rightBarButtonItem = button
+        }
         
         // Spinner
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +94,7 @@ private extension WebViewController {
         spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
-    @objc func filter() {
+    @objc func selectWebsite() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         for w in websites {
@@ -114,9 +119,4 @@ private extension WebViewController {
             loadWebsite(w)
         }
     }
-}
-
-private struct Website {
-    var domain: String
-    var urlString: String
 }

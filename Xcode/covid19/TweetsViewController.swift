@@ -16,44 +16,39 @@ class TweetsViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     
     // Data
-    var user = ""
+    var users: [String] = []
     var webContent = ""
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    init(tab: Tab) {
+
+    init(tab: Tab, usernames: [String]) {
         super.init(nibName: nil, bundle:nil)
-        
-        setup(tab)
+
+        users = usernames
+        setup(tab: tab, user: usernames.first)
         configure()
-        refreshWebView(refreshControl)
+        refreshWebView(user: usernames.first)
     }
 }
 
 private extension TweetsViewController {
-    func setup(_ tab: Tab) {
+    func contentForUser(_ user: String?) -> String {
+        guard let user = user else { return "" }
+
+        return """
+        <meta name='viewport' content='initial-scale=1.0'/>
+        <a class="twitter-timeline" href="https://twitter.com/\(user)"></a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        """
+    }
+
+    func setup(tab: Tab, user: String?) {
         view.backgroundColor = .white
         
         title = tab.name
-        
-        guard let tuser = tab.twitterUser else {
-            return
-        }
-        
-        user = tuser
-        
-        webContent = """
-        <meta name='viewport' content='initial-scale=1.0'/>
-        <a class="twitter-timeline" href="https://twitter.com/\(tuser)"></a>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        """
-        
+
         webView.navigationDelegate = self
     }
     
@@ -72,11 +67,39 @@ private extension TweetsViewController {
         refreshControl.addTarget(self, action: #selector(refreshWebView(_:)), for: UIControl.Event.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         webView.scrollView.bounces = true
+
+        // Select website button
+        let image = UIImage(systemName: "ellipsis")
+        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(selectTweetUser))
+        navigationItem.rightBarButtonItem = button
+    }
+
+    func refreshWebView(user: String?) {
+        webContent = contentForUser(user)
+        webView.loadHTMLString(webContent, baseURL: nil)
     }
     
     @objc func refreshWebView(_ sender: UIRefreshControl) {
         webView.loadHTMLString(webContent, baseURL: nil)
         sender.endRefreshing()
+    }
+
+    @objc func selectTweetUser() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        for user in users {
+            let action = UIAlertAction(title: user, style: .default, handler: handleUserSelection)
+            alertController.addAction(action)
+        }
+
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+    func handleUserSelection(_ action: UIAlertAction) {
+        guard let user = action.title else { return }
+        refreshWebView(user: user)
     }
 }
 

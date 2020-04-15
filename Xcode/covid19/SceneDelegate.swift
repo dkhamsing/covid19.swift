@@ -24,11 +24,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
-        let webController = WebViewController()
+        let websites = [
+            Website(domain: "viruscovid.tech", urlString: "https://viruscovid.tech"),
+            Website(domain: "ncov2019.live", urlString: "https://ncov2019.live"),
+            Website(domain: "google.com", urlString: "https://www.google.com/search?q=covid+cases")
+        ]
+        let webController = WebViewController(websites)
         webController.tabBarItem.image = UIImage(systemName: Constant.web.imageSystemName)
         webController.tabBarItem.title = Constant.web.name
         let webNavigationController = UINavigationController(rootViewController: webController)
         webNavigationController.navigationBar.prefersLargeTitles = true
+
+        let trendsWebsites = [
+            Website(domain: "Mobility Trends: Apple", urlString: "https://www.apple.com/covid19/mobility"),            
+        ]
+        let trendsController = WebViewController(trendsWebsites)
+        trendsController.tabBarItem.image = UIImage(systemName: Constant.trends.imageSystemName)
+        trendsController.tabBarItem.title = Constant.trends.name
+        let trendsNavigationController = UINavigationController(rootViewController: trendsController)
+        trendsNavigationController.navigationBar.prefersLargeTitles = true
 
         let dataController = DataViewController()
         dataController.tabBarItem.image = UIImage(systemName: Constant.data.imageSystemName)
@@ -41,19 +55,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let newsNavigationController = UINavigationController(rootViewController: newsController)
         newsNavigationController.navigationBar.prefersLargeTitles = true
 
-        let bnoDeskTweetsController = TweetsViewController(tab: Constant.bno)
-        bnoDeskTweetsController.tabBarItem.image = UIImage(systemName: Constant.bno.imageSystemName)
-
-        let tweetsController = TweetsViewController(tab: Constant.twitter)
-        tweetsController.tabBarItem.image = UIImage(systemName: Constant.twitter.imageSystemName)
+        let users = ["BNODesk", "_DanielSinclair"]
+        let tweetsController = TweetsViewController(tab: Constant.twitter, usernames: users)
+        let tweetsNavigationController = UINavigationController.init(rootViewController: tweetsController)
+        tweetsController.tabBarItem.image = UIImage(systemName: "dot.radiowaves.left.and.right")
 
         let tabController = UITabBarController()
         tabController.viewControllers = [
             webNavigationController,
             dataNavigationController,
+            trendsNavigationController,
             newsNavigationController,
-            bnoDeskTweetsController,
-            tweetsController
+            tweetsNavigationController,
         ]
 
         window?.rootViewController = tabController
