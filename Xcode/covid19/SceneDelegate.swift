@@ -25,24 +25,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
 
         let websites = [
+            Website(domain: "rt.live", urlString: "https://rt.live"),
             Website(domain: "viruscovid.tech", urlString: "https://viruscovid.tech"),
             Website(domain: "ncov2019.live", urlString: "https://ncov2019.live"),
-            Website(domain: "google.com", urlString: "https://www.google.com/search?q=covid+cases")
+            Website(domain: "google.com", urlString: "https://www.google.com/search?q=covid+cases"),
+            Website(domain: "apple.com/covid19/mobility", urlString: "https://www.apple.com/covid19/mobility"),
         ]
         let webController = WebViewController(websites)
         webController.tabBarItem.image = UIImage(systemName: Constant.web.imageSystemName)
         webController.tabBarItem.title = Constant.web.name
         let webNavigationController = UINavigationController(rootViewController: webController)
         webNavigationController.navigationBar.prefersLargeTitles = true
-
-        let trendsWebsites = [
-            Website(domain: "Mobility Trends: Apple", urlString: "https://www.apple.com/covid19/mobility"),            
-        ]
-        let trendsController = WebViewController(trendsWebsites)
-        trendsController.tabBarItem.image = UIImage(systemName: Constant.trends.imageSystemName)
-        trendsController.tabBarItem.title = Constant.trends.name
-        let trendsNavigationController = UINavigationController(rootViewController: trendsController)
-        trendsNavigationController.navigationBar.prefersLargeTitles = true
 
         let dataController = DataViewController()
         dataController.tabBarItem.image = UIImage(systemName: Constant.data.imageSystemName)
@@ -64,7 +57,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabController.viewControllers = [
             webNavigationController,
             dataNavigationController,
-            trendsNavigationController,
             newsNavigationController,
             tweetsNavigationController,
         ]
