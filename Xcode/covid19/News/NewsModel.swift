@@ -30,4 +30,8 @@ extension Article {
     var descriptionOrContent: String? {
         return description ?? content
     }
+
+    var identifier: String? {
+        return url?.absoluteString ?? urlToImage?.absoluteString ?? publishedAt
+    }
 }

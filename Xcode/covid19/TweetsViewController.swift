@@ -86,6 +86,7 @@ private extension TweetsViewController {
 
     @objc func selectTweetUser() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.fixiOSAutolayoutNegativeConstraints()
 
         for user in users {
             let action = UIAlertAction(title: user, style: .default, handler: handleUserSelection)

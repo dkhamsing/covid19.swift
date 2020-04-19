@@ -96,7 +96,8 @@ private extension WebViewController {
     
     @objc func selectWebsite() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
+        alertController.fixiOSAutolayoutNegativeConstraints()
+
         for w in websites {
             let action = UIAlertAction(title: w.domain , style: .default, handler: openWebsite)
             alertController.addAction(action)

@@ -50,7 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let users = ["BNODesk", "_DanielSinclair"]
         let tweetsController = TweetsViewController(tab: Constant.twitter, usernames: users)
-        let tweetsNavigationController = UINavigationController.init(rootViewController: tweetsController)
+        let tweetsNavigationController = UINavigationController(rootViewController: tweetsController)
         tweetsController.tabBarItem.image = UIImage(systemName: "dot.radiowaves.left.and.right")
 
         let tabController = UITabBarController()

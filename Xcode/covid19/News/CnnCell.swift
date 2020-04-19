@@ -9,23 +9,24 @@
 import UIKit
 
 class CnnCell: UICollectionViewCell {
-    let top = UILabel()
-    let imageLabel = UILabel()
-    let image = UIImageView()
-    let content = UILabel()
-    let ago = UILabel()
-    let separator = UIView()
+    var identifier: String?
+
+    private let imageView = UIImageView()
+    private let top = UILabel()
+    private let imageLabel = UILabel()
+    private let content = UILabel()
+    private let ago = UILabel()
+    private let separator = UIView()
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+
+        identifier = nil
         top.text = nil
         imageLabel.text = nil
         content.text = nil
         ago.text = nil
-        
-        image.image = nil
-        image.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        imageView.image = nil
     }
     
     override init(frame: CGRect) {
@@ -41,25 +42,34 @@ class CnnCell: UICollectionViewCell {
 }
 
 extension CnnCell {
-    static var identifier = "CnnCell"
-    static var imageSize = CGSize.init(width: 450, height: 280)
+    static var ReuseIdentifier = "CnnCell"
+    static var ImageSize = CGSize(width: 450, height: 280)
     
     func configure(_ article: Article) {
         ago.text = article.cnnAgo
         top.text = article.source?.name?.uppercased()
         imageLabel.text = article.title
         content.text = article.descriptionOrContent
+        identifier = article.identifier
     }
-    
-    func addGradient() {
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = image.bounds
-        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-        image.layer.insertSublayer(gradientLayer, at: 0)
+
+    func update(image: UIImage?, identifier ident: String?) {
+        guard identifier == ident else { return }
+        imageView.image = image
+
+        guard imageView.layer.sublayers?.count == nil else { return }
+        addGradient()
     }
 }
 
 private extension CnnCell {
+    func addGradient() {
+           let gradientLayer = CAGradientLayer()
+           gradientLayer.frame = imageView.bounds
+           gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+           imageView.layer.insertSublayer(gradientLayer, at: 0)
+       }
+
     func setup() {
         contentView.backgroundColor = .white
         
@@ -76,30 +86,30 @@ private extension CnnCell {
         content.textColor = .darkGray
         content.font = UIFont.systemFont(ofSize: 14)
         
-        image.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFit
 
         separator.backgroundColor = UIColor.colorFor(red: 241, green: 242, blue: 246)
     }
     
     func config() {
-        [image, top, imageLabel, content, ago, separator].forEach { contentView.autolayoutAddSubview($0) }
+        [imageView, top, imageLabel, content, ago, separator].forEach { contentView.autolayoutAddSubview($0) }
         
         let inset: CGFloat = 15
         NSLayoutConstraint.activate([
-            image.topAnchor.constraint(equalTo: contentView.topAnchor),
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            image.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            image.heightAnchor.constraint(equalToConstant: CnnCell.imageSize.height),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: CnnCell.ImageSize.height),
             
-            top.leadingAnchor.constraint(equalTo: image.leadingAnchor, constant: inset),
+            top.leadingAnchor.constraint(equalTo: imageView.leadingAnchor, constant: inset),
             top.heightAnchor.constraint(equalToConstant: 35),
             top.bottomAnchor.constraint(equalTo: imageLabel.topAnchor),
             
             imageLabel.leadingAnchor.constraint(equalTo: top.leadingAnchor),
             imageLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: (-2 * inset)),
-            imageLabel.bottomAnchor.constraint(equalTo: image.bottomAnchor, constant: -inset),
+            imageLabel.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -inset),
             
-            content.topAnchor.constraint(equalTo: image.bottomAnchor, constant: inset),
+            content.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: inset),
             content.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: (2 * inset)),
             content.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: (-2 * inset)),
 

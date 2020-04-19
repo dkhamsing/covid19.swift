@@ -42,7 +42,7 @@ class NewsViewController: UIViewController {
 private extension NewsViewController {
     func setup() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: genericLayout())
-        collectionView?.register(CnnCell.self, forCellWithReuseIdentifier: CnnCell.identifier)
+        collectionView?.register(CnnCell.self, forCellWithReuseIdentifier: CnnCell.ReuseIdentifier)
         collectionView?.backgroundColor = .white
         
         collectionView?.dataSource = self
@@ -63,11 +63,10 @@ private extension NewsViewController {
         collectionView?.addSubview(refreshControl)
     }
     
-    
     func genericLayout() -> UICollectionViewLayout {
         let size = NSCollectionLayoutSize(
             widthDimension: NSCollectionLayoutDimension.fractionalWidth(1),
-            heightDimension: NSCollectionLayoutDimension.estimated(70)
+            heightDimension: NSCollectionLayoutDimension.estimated(400)
         )
         let item = NSCollectionLayoutItem(layoutSize: size)
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: size, subitem: item, count: 1)
@@ -110,39 +109,18 @@ extension NewsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CnnCell.identifier, for: indexPath) as! CnnCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CnnCell.ReuseIdentifier, for: indexPath) as! CnnCell
         
         let article = self.articles[indexPath.row]
+        let identifier = article.identifier
         cell.configure(article)
-        downloader.getImage(imageUrl: article.urlToImage, size: CnnCell.imageSize) { (image) in
-            cell.image.image = image
-            cell.addGradient()
+        downloader.getImage(imageUrl: article.urlToImage, size: CnnCell.ImageSize) { (image) in
+            guard cell.identifier == identifier else { return }
+            cell.update(image: image, identifier: identifier)
         }
         
         return cell
-    }
-    
-    private func getImage(_ imageUrl: URL?, completion: @escaping (UIImage?) -> Void) {
-        guard let url = imageUrl else {
-            completion(nil)
-            return
-        }
-        
-        if let image = imageCache[url.absoluteString] {
-            completion(image)
-        }
-        else {
-            DispatchQueue.global().async { [weak self] in
-                if let data = try? Data(contentsOf: url) {
-                    DispatchQueue.main.async { [weak self] in
-                        let image = UIImage(data: data)
-                        self?.imageCache[url.absoluteString] = image
-                        completion(image)
-                    }
-                }
-            }
-        }
-    }
+    }    
 }
 
 extension NewsViewController: UICollectionViewDelegate {
