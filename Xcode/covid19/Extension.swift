@@ -58,8 +58,10 @@ extension URL {
                 }
                 return
             }
-            
-            if let result = try? JSONDecoder().decode(type, from: unwrapped) {
+
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            if let result = try? decoder.decode(type, from: unwrapped) {
                 DispatchQueue.main.async {
                     completion(.success(result))
                 }

@@ -11,16 +11,18 @@ import UIKit
 class ImageDownloader {
     var imageCache: [String: UIImage] = [:]
 
-    func getImage(imageUrl: URL?, size: CGSize, completion: @escaping (UIImage?) -> Void) {
-        guard let url = imageUrl else {
+    func getImage(imageUrl: String?, size: CGSize, completion: @escaping (UIImage?) -> Void) {
+        guard
+            let str = imageUrl,
+            let url = URL(string: str)
+        else {
             DispatchQueue.main.async {
                 completion(nil)
             }
             return
         }
 
-        let k = key(urlString: url.absoluteString, size: size)
-
+        let k = url.key(size: size)
         if let cached = imageCache.cached(k) {
             DispatchQueue.main.async {
                 completion(cached)
@@ -47,20 +49,12 @@ class ImageDownloader {
     }
 }
 
-private extension ImageDownloader {
-    func key(urlString: String, size: CGSize) -> String {
-        let s = "\(urlString)-\(size.width)-\(size.height)"
-        return s
-    }
-}
-
 private extension Dictionary where Key == String {
     func cached(_ key: String) -> UIImage? {
         return self[key] as? UIImage
     }
 
     mutating func cache(key: String, value: Value?) {
-
         self[key] = value
     }
 }
@@ -72,5 +66,11 @@ private extension UIImage {
         return renderer.image { (context) in
             image.draw(in: CGRect(origin: .zero, size: size))
         }
+    }
+}
+
+private extension URL {
+    func key(size: CGSize) -> String {
+        return "\(absoluteString)-\(size.width)-\(size.height)"
     }
 }

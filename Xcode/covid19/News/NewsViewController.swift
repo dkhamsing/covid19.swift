@@ -42,7 +42,7 @@ class NewsViewController: UIViewController {
 private extension NewsViewController {
     func setup() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: genericLayout())
-        collectionView?.register(CnnCell.self, forCellWithReuseIdentifier: CnnCell.ReuseIdentifier)
+        collectionView?.register(FlipboardCell.self, forCellWithReuseIdentifier: FlipboardCell.ReuseIdentifier)
         collectionView?.backgroundColor = .white
         
         collectionView?.dataSource = self
@@ -109,14 +109,17 @@ extension NewsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CnnCell.ReuseIdentifier, for: indexPath) as! CnnCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FlipboardCell.ReuseIdentifier, for: indexPath) as! FlipboardCell
         
         let article = self.articles[indexPath.row]
         let identifier = article.identifier
         cell.configure(article)
-        downloader.getImage(imageUrl: article.urlToImage, size: CnnCell.ImageSize) { (image) in
+        downloader.getImage(imageUrl: article.urlToImage, size: cell.imageSizeUnwrapped) { (image) in
             guard cell.identifier == identifier else { return }
-            cell.update(image: image, identifier: identifier)
+            cell.update(image: image, matchingIdentifier: identifier)
+        }
+        downloader.getImage(imageUrl: article.urlToSourceLogo, size: FlipboardCell.LogoSize) { (image) in
+            cell.updateSourceLogo(image: image, matchingIdentifier: identifier)
         }
         
         return cell

@@ -1,8 +1,8 @@
 //
-//  Model.swift
-//  covid19
+//  NewsModel.swift
+//  covid19.swift
 //
-//  Created by Daniel on 3/30/20.
+//  Created by Daniel on 4/23/20.
 //  Copyright © 2020 dk. All rights reserved.
 //
 
@@ -13,12 +13,13 @@ struct Headline: Codable {
 }
 
 struct Article: Codable {
+    var author: String?
     var title: String?
     var description: String?
     var content: String?
     var url: URL?
-    var urlToImage: URL?
-    var publishedAt: String?
+    var urlToImage: String?
+    var publishedAt: Date?
     var source: Source?
 }
 
@@ -32,6 +33,18 @@ extension Article {
     }
 
     var identifier: String? {
-        return url?.absoluteString ?? urlToImage?.absoluteString ?? publishedAt
+        return url?.absoluteString ?? urlToImage
     }
+
+    var urlToSourceLogo: String {
+        guard let host = url?.host else { return "" }
+
+        return "https://logo.clearbit.com/\(host)"
+    }
+
+    var urlToGreySourceLogo: String {
+            guard let host = url?.host else { return "" }
+
+            return "https://logo.clearbit.com/\(host)?greyscale=true"
+        }
 }

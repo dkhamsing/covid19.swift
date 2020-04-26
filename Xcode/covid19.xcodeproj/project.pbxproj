@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		6518288B2432B7240003BD36 /* TweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6518288A2432B7240003BD36 /* TweetsViewController.swift */; };
 		6532CFBB243AA25E00030B78 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6532CFBA243AA25E00030B78 /* DataViewController.swift */; };
+		65880136245524A700CD7A53 /* NewsProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65880134245524A700CD7A53 /* NewsProfileCell.swift */; };
+		65880137245524A700CD7A53 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65880135245524A700CD7A53 /* NewsCell.swift */; };
+		65880139245524B200CD7A53 /* FlipboardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65880138245524B200CD7A53 /* FlipboardCell.swift */; };
 		659F7395243BC6DC006E2CDD /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659F7394243BC6DB006E2CDD /* NewsModel.swift */; };
 		659F7397243BC6EE006E2CDD /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659F7396243BC6EE006E2CDD /* DataModel.swift */; };
 		659F739D243CFA4D006E2CDD /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659F739C243CFA4D006E2CDD /* WebViewController.swift */; };
@@ -17,7 +20,6 @@
 		65A4B34A24325886006B459D /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65A4B34924325886006B459D /* NewsViewController.swift */; };
 		65A4B34F2432588A006B459D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65A4B34E2432588A006B459D /* Assets.xcassets */; };
 		65A4B3522432588A006B459D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65A4B3502432588A006B459D /* LaunchScreen.storyboard */; };
-		65CD984C244567FA005B7077 /* CnnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CD984B244567FA005B7077 /* CnnCell.swift */; };
 		65D5016C2440077D00C5DFDD /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5016B2440077D00C5DFDD /* DataView.swift */; };
 		65D50170244007C200C5DFDD /* DataBarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D5016F244007C200C5DFDD /* DataBarCell.swift */; };
 		65E0B355244407D900FA28DE /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E0B354244407D900FA28DE /* ImageDownloader.swift */; };
@@ -28,6 +30,9 @@
 /* Begin PBXFileReference section */
 		6518288A2432B7240003BD36 /* TweetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetsViewController.swift; sourceTree = "<group>"; };
 		6532CFBA243AA25E00030B78 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
+		65880134245524A700CD7A53 /* NewsProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsProfileCell.swift; sourceTree = "<group>"; };
+		65880135245524A700CD7A53 /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		65880138245524B200CD7A53 /* FlipboardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlipboardCell.swift; sourceTree = "<group>"; };
 		659F7394243BC6DB006E2CDD /* NewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		659F7396243BC6EE006E2CDD /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		659F739C243CFA4D006E2CDD /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
@@ -38,7 +43,6 @@
 		65A4B34E2432588A006B459D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		65A4B3512432588A006B459D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65A4B3532432588A006B459D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		65CD984B244567FA005B7077 /* CnnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CnnCell.swift; sourceTree = "<group>"; };
 		65D5016B2440077D00C5DFDD /* DataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
 		65D5016F244007C200C5DFDD /* DataBarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBarCell.swift; sourceTree = "<group>"; };
 		65E0B354244407D900FA28DE /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
@@ -95,7 +99,9 @@
 		65D501692440072700C5DFDD /* News */ = {
 			isa = PBXGroup;
 			children = (
-				65CD984B244567FA005B7077 /* CnnCell.swift */,
+				65880135245524A700CD7A53 /* NewsCell.swift */,
+				65880134245524A700CD7A53 /* NewsProfileCell.swift */,
+				65880138245524B200CD7A53 /* FlipboardCell.swift */,
 				659F7394243BC6DB006E2CDD /* NewsModel.swift */,
 				65A4B34924325886006B459D /* NewsViewController.swift */,
 			);
@@ -183,11 +189,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				65880136245524A700CD7A53 /* NewsProfileCell.swift in Sources */,
 				65A4B34A24325886006B459D /* NewsViewController.swift in Sources */,
 				65E0B355244407D900FA28DE /* ImageDownloader.swift in Sources */,
 				659F739D243CFA4D006E2CDD /* WebViewController.swift in Sources */,
-				65CD984C244567FA005B7077 /* CnnCell.swift in Sources */,
+				65880139245524B200CD7A53 /* FlipboardCell.swift in Sources */,
 				6532CFBB243AA25E00030B78 /* DataViewController.swift in Sources */,
+				65880137245524A700CD7A53 /* NewsCell.swift in Sources */,
 				65D50170244007C200C5DFDD /* DataBarCell.swift in Sources */,
 				6518288B2432B7240003BD36 /* TweetsViewController.swift in Sources */,
 				659F7395243BC6DC006E2CDD /* NewsModel.swift in Sources */,
