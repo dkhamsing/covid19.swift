@@ -132,9 +132,7 @@ extension NewsViewController: UICollectionViewDelegate {
         
         let article = articles[indexPath.row]
         
-        guard let url = article.url else {
-            return
-        }
+        guard let url = article.url else { return }
         
         let sfvc = SFSafariViewController(url: url)
         self.present(sfvc, animated: true, completion: nil)

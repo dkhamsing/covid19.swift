@@ -141,9 +141,9 @@ extension FlipboardCell {
 
 private extension Article {
     var flipboardAttributedSubtitle: NSAttributedString {
-        guard let font = UIFont(name: "AppleSDGothicNeo-Light", size: 15),
-            let d = descriptionOrContent
-            else { return NSAttributedString() }
+        guard
+            let font = UIFont(name: "AppleSDGothicNeo-Light", size: 15),
+            let d = descriptionOrContent else { return NSAttributedString() }
 
         let style = NSMutableParagraphStyle()
         style.lineHeightMultiple = 1.2

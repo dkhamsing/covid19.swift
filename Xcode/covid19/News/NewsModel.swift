@@ -43,8 +43,8 @@ extension Article {
     }
 
     var urlToGreySourceLogo: String {
-            guard let host = url?.host else { return "" }
+        guard let host = url?.host else { return "" }
 
-            return "https://logo.clearbit.com/\(host)?greyscale=true"
-        }
+        return "https://logo.clearbit.com/\(host)?greyscale=true"
+    }
 }

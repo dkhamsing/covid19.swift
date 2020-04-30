@@ -31,7 +31,8 @@ class ImageDownloader {
         }
 
         DispatchQueue.global().async { [weak self] in
-            guard let data = try? Data(contentsOf: url),
+            guard
+                let data = try? Data(contentsOf: url),
                 let image = UIImage(data: data) else {
                     DispatchQueue.main.async {
                         completion(nil)

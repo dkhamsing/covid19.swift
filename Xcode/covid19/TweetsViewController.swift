@@ -100,6 +100,7 @@ private extension TweetsViewController {
 
     func handleUserSelection(_ action: UIAlertAction) {
         guard let user = action.title else { return }
+        
         refreshWebView(user: user)
     }
 }

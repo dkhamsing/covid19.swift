@@ -75,9 +75,7 @@ private extension Country {
         
         let num = NSNumber(value: latest.confirmed)
         
-        guard let s = numberFormatter.string(from: num) else {
-            return NSAttributedString()
-        }
+        guard let s = numberFormatter.string(from: num) else { return NSAttributedString() }
         
         return NSAttributedString(string: s, attributes: titleAttribute)
     }
