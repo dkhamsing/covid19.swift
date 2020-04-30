@@ -20,7 +20,7 @@ class DataView: UICollectionReusableView {
         super.prepareForReuse()
         
         casesLabel.attributedText = nil
-        countryLabel.attributedText = nil
+        countryLabel.text = nil
     }
     
     override func layoutSubviews() {
@@ -67,7 +67,7 @@ private extension Country {
         let titleAttribute: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
             .foregroundColor: color,
-            .font: UIFont.monospacedSystemFont(ofSize: 65, weight: .regular)
+            .font: UIFont.monospacedSystemFont(ofSize: 64, weight: .regular)
         ]
         
         let numberFormatter = NumberFormatter()
