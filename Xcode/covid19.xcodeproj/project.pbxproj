@@ -36,7 +36,7 @@
 		659F7394243BC6DB006E2CDD /* NewsModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		659F7396243BC6EE006E2CDD /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		659F739C243CFA4D006E2CDD /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
-		65A4B34224325886006B459D /* covid19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = covid19.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65A4B34224325886006B459D /* C19.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = C19.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65A4B34524325886006B459D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65A4B34724325886006B459D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		65A4B34924325886006B459D /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 		65A4B34324325886006B459D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65A4B34224325886006B459D /* covid19.app */,
+				65A4B34224325886006B459D /* C19.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,7 +136,7 @@
 			);
 			name = covid19;
 			productName = covid19;
-			productReference = 65A4B34224325886006B459D /* covid19.app */;
+			productReference = 65A4B34224325886006B459D /* C19.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -347,7 +347,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dk.covid19;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = C19;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -364,7 +364,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = dk.covid19;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = C19;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
