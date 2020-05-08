@@ -17,10 +17,12 @@ iOS 13 for [Collection View Compositional Layouts](https://developer.apple.com/d
 - [Tweets: BNO Newsroom](https://twitter.com/BNODesk)
 - [Tweets: Daniel Sinclair](https://twitter.com/_DanielSinclair)
 - [Web: rt.live](https://rt.live)
+- [Web: modelingcovid.com](https://modelingcovid.com/)
 - [Web: viruscovid.tech](https://viruscovid.tech)
 - [Web: ncov2019.live](https://ncov2019.live)
 - [Web: google.com](https://www.google.com/search?q=covid+cases)
 - [Web: apple.com/covid19/mobility](https://www.apple.com/covid19/mobility)
+- [App icon by andriwidodo](https://thenounproject.com/term/lightning/1041190/)
 
 ## Contact
 

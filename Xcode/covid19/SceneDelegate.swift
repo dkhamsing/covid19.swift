@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let websites = [
             Website(domain: "rt.live", urlString: "https://rt.live"),
+            Website(domain: "modelingcovid.com", urlString: "https://modelingcovid.com/"),
             Website(domain: "viruscovid.tech", urlString: "https://viruscovid.tech"),
             Website(domain: "ncov2019.live", urlString: "https://ncov2019.live"),
             Website(domain: "google.com", urlString: "https://www.google.com/search?q=covid+cases"),
