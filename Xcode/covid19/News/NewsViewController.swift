@@ -43,7 +43,7 @@ private extension NewsViewController {
     func setup() {
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: genericLayout())
         collectionView?.register(FlipboardCell.self, forCellWithReuseIdentifier: FlipboardCell.ReuseIdentifier)
-        collectionView?.backgroundColor = .white
+        collectionView?.backgroundColor = .systemBackground
         
         collectionView?.dataSource = self
         collectionView?.delegate = self
