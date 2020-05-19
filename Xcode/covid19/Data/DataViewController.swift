@@ -67,7 +67,7 @@ private extension DataViewController {
         
         spinner.startAnimating()
         
-        url.get(type: Response.self) { (result) in
+        url.get { (result: Result<Response, ApiError>) in
             self.spinner.stopAnimating()
             
             switch result {

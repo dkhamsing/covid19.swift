@@ -86,8 +86,8 @@ private extension NewsViewController {
         
         self.articles = []
         self.collectionView?.reloadData()
-        
-        url.get(type: Headline.self) { (result) in
+
+        url.get { (result: Result<Headline,ApiError>) in
             self.refreshControl.endRefreshing()
             
             switch result {

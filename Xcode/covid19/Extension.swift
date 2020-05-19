@@ -42,7 +42,7 @@ extension UIViewController {
 }
 
 extension URL {
-    func get<T: Codable>(type: T.Type, completion: @escaping (Result<T, ApiError>) -> Void) {
+    func get<T: Codable>(completion: @escaping (Result<T, ApiError>) -> Void) {
         let session = URLSession.shared
         let task = session.dataTask(with: self) { data, _, error in
             if let _ = error {
@@ -61,7 +61,7 @@ extension URL {
 
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
-            if let result = try? decoder.decode(type, from: unwrapped) {
+            if let result = try? decoder.decode(T.self, from: unwrapped) {
                 DispatchQueue.main.async {
                     completion(.success(result))
                 }
