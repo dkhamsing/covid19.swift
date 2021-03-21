@@ -8,16 +8,14 @@ Small iOS app to show some COVID-19 health, data, news and tweets :zap:
 
 ## Requirements
 
-iOS 13 for [Collection View Compositional Layouts](https://developer.apple.com/documentation/uikit/views_and_controls/collection_views/using_collection_view_compositional_layouts_and_diffable_data_sources), [SF Symbols](https://developer.apple.com/design/human-interface-guidelines/sf-symbols/overview/).
+- Xcode 12, iOS 14
 
 ## Credits
 
 - [API: COVID-19](https://github.com/ExpDev07/coronavirus-tracker-api)
 - [API: News](https://newsapi.org)
 - [Tweets: BNO Newsroom](https://twitter.com/BNODesk)
-- [Tweets: Daniel Sinclair](https://twitter.com/_DanielSinclair)
-- [Web: rt.live](https://rt.live)
-- [Web: modelingcovid.com](https://modelingcovid.com/)
+- [Tweets: CDC](https://twitter.com/CDCgov)
 - [Web: viruscovid.tech](https://viruscovid.tech)
 - [Web: ncov2019.live](https://ncov2019.live)
 - [Web: google.com](https://www.google.com/search?q=covid+cases)

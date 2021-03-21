@@ -1,5 +1,5 @@
 //
-//  TweetsViewController.swift
+//  TwitterViewController.swift
 //  covid19
 //
 //  Created by Daniel on 3/30/20.
@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import SafariServices
 
-class TweetsViewController: UIViewController {
+class TwitterViewController: UIViewController {
     // UI
     private let webView = WKWebView()
     private let refreshControl = UIRefreshControl()
@@ -23,17 +23,17 @@ class TweetsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(tab: Tab, usernames: [String]) {
+    init(title: String, usernames: [String]) {
         super.init(nibName: nil, bundle:nil)
 
         users = usernames
-        setup(tab: tab, user: usernames.first)
+        setup(aTitle: title, user: usernames.first)
         configure()
         refreshWebView(user: usernames.first)
     }
 }
 
-private extension TweetsViewController {
+private extension TwitterViewController {
     func contentForUser(_ user: String?) -> String {
         guard let user = user else { return "" }
 
@@ -44,10 +44,10 @@ private extension TweetsViewController {
         """
     }
 
-    func setup(tab: Tab, user: String?) {
+    func setup(aTitle: String, user: String?) {
         view.backgroundColor = .white
         
-        title = tab.name
+        title = aTitle
 
         webView.navigationDelegate = self
     }
@@ -68,10 +68,19 @@ private extension TweetsViewController {
         webView.scrollView.addSubview(refreshControl)
         webView.scrollView.bounces = true
 
-        // Select website button
-        let image = UIImage(systemName: "ellipsis")
-        let button = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(selectTweetUser))
-        navigationItem.rightBarButtonItem = button
+        let buttonImage = UIImage(systemName: "ellipsis")
+        let children: [UIAction] =  users.map {
+            let user = $0
+            let title = "@" + $0
+            return UIAction(title: title) { _ in
+                self.refreshWebView(user: user)
+            }
+        }
+
+        let menu = UIMenu(title: "", children: children)
+        let barButton = UIBarButtonItem(image: buttonImage, primaryAction: nil, menu: menu)
+        navigationItem.rightBarButtonItems = [barButton]
+
     }
 
     func refreshWebView(user: String?) {
@@ -83,29 +92,9 @@ private extension TweetsViewController {
         webView.loadHTMLString(webContent, baseURL: nil)
         sender.endRefreshing()
     }
-
-    @objc func selectTweetUser() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.fixiOSAutolayoutNegativeConstraints()
-
-        for user in users {
-            let action = UIAlertAction(title: user, style: .default, handler: handleUserSelection)
-            alertController.addAction(action)
-        }
-
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
-        self.present(alertController, animated: true, completion: nil)
-    }
-
-    func handleUserSelection(_ action: UIAlertAction) {
-        guard let user = action.title else { return }
-        
-        refreshWebView(user: user)
-    }
 }
 
-extension TweetsViewController: WKNavigationDelegate {
+extension TwitterViewController: WKNavigationDelegate {
     /// Credits: https://medium.com/@musmein/rendering-embedded-tweets-and-timelines-within-webview-in-ios-e48920754add
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated  {

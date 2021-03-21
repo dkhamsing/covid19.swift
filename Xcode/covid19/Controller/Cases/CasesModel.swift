@@ -1,5 +1,5 @@
 //
-//  DataModel.swift
+//  CasesModel.swift
 //  covid19
 //
 //  Created by Daniel on 4/6/20.
@@ -30,6 +30,6 @@ struct Timeline: Codable {
 }
 
 struct CovidData: Codable {
-    var latest: Int
+    var latest: Int?
     var timeline: [String: Int]
 }

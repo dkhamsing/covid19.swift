@@ -20,10 +20,10 @@ class NewsViewController: UIViewController {
     private var imageCache: [String: UIImage] = [:]
     private var downloader = ImageDownloader()
     
-    init(tab: Tab) {
+    init(_ aTitle: String) {
         super.init(nibName: nil, bundle:nil)
         
-        title = tab.name
+        title = aTitle
     }
     
     required init?(coder: NSCoder) {

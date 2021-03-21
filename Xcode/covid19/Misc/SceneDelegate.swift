@@ -24,45 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
 
-        let websites = [
-            Website(domain: "rt.live", urlString: "https://rt.live"),
-            Website(domain: "modelingcovid.com", urlString: "https://modelingcovid.com/"),
-            Website(domain: "viruscovid.tech", urlString: "https://viruscovid.tech"),
-            Website(domain: "ncov2019.live", urlString: "https://ncov2019.live"),
-            Website(domain: "google.com", urlString: "https://www.google.com/search?q=covid+cases"),
-            Website(domain: "apple.com/covid19/mobility", urlString: "https://www.apple.com/covid19/mobility"),
-        ]
-        let webController = WebViewController(websites)
-        webController.tabBarItem.image = UIImage(systemName: Constant.web.imageSystemName)
-        webController.tabBarItem.title = Constant.web.name
-        let webNavigationController = UINavigationController(rootViewController: webController)
-        webNavigationController.navigationBar.prefersLargeTitles = true
-
-        let dataController = DataViewController()
-        dataController.tabBarItem.image = UIImage(systemName: Constant.data.imageSystemName)
-        dataController.tabBarItem.title = Constant.data.name
-        let dataNavigationController = UINavigationController(rootViewController: dataController)
-        dataNavigationController.navigationBar.prefersLargeTitles = true
-
-        let newsController = NewsViewController(tab: Constant.news)
-        newsController.tabBarItem.image = UIImage(systemName: Constant.news.imageSystemName)
-        let newsNavigationController = UINavigationController(rootViewController: newsController)
-        newsNavigationController.navigationBar.prefersLargeTitles = true
-
-        let users = ["BNODesk", "_DanielSinclair"]
-        let tweetsController = TweetsViewController(tab: Constant.twitter, usernames: users)
-        let tweetsNavigationController = UINavigationController(rootViewController: tweetsController)
-        tweetsController.tabBarItem.image = UIImage(systemName: "dot.radiowaves.left.and.right")
-
-        let tabController = UITabBarController()
-        tabController.viewControllers = [
-            webNavigationController,
-            dataNavigationController,
-            newsNavigationController,
-            tweetsNavigationController,
-        ]
-
-        window?.rootViewController = tabController
+        window?.rootViewController = Covid19TabController()
         window?.makeKeyAndVisible()
     }
 

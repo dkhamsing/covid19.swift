@@ -1,5 +1,5 @@
 //
-//  DataViewController.swift
+//  CasesViewController.swift
 //  covid19
 //
 //  Created by Daniel on 4/5/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DataViewController: UIViewController {
+class CasesViewController: UIViewController {
     // Constants
     private let trackerApiStringUrl = "https://coronavirus-tracker-api.herokuapp.com/v2/locations?timelines=1"
     static let sectionHeaderElementKind = "section-header-country"
@@ -29,7 +29,7 @@ class DataViewController: UIViewController {
     }
 }
 
-private extension DataViewController {
+private extension CasesViewController {
     func colorForRow(_ row: Int) -> UIColor {
         return row % 2 == 0 ? .red : UIColor.systemPink
     }
@@ -50,11 +50,11 @@ private extension DataViewController {
     }
     
     func setup() {
-        title = Constant.data.name
+        title = Tab.data.name
         
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createLayout())
-        collectionView?.register(DataBarCell.self, forCellWithReuseIdentifier: DataBarCell.identifier)
-        collectionView?.register(DataView.self, forSupplementaryViewOfKind: DataViewController.sectionHeaderElementKind, withReuseIdentifier: DataView.identifier)
+        collectionView?.register(CasesBarCell.self, forCellWithReuseIdentifier: CasesBarCell.identifier)
+        collectionView?.register(CasesView.self, forSupplementaryViewOfKind: CasesViewController.sectionHeaderElementKind, withReuseIdentifier: CasesView.identifier)
         collectionView?.backgroundColor = .white
         collectionView?.dataSource = self
     }
@@ -98,7 +98,7 @@ private extension DataViewController {
                                                       heightDimension: .absolute(85))
         let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: headerFooterSize,
-            elementKind: DataViewController.sectionHeaderElementKind, alignment: .top)
+            elementKind: CasesViewController.sectionHeaderElementKind, alignment: .top)
         section.boundarySupplementaryItems = [sectionHeader]
         section.orthogonalScrollingBehavior = .continuous
         let layout = UICollectionViewCompositionalLayout(section: section)
@@ -107,7 +107,7 @@ private extension DataViewController {
     }
 }
 
-extension DataViewController: UICollectionViewDataSource {
+extension CasesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Country.numberOfDaysOfDataToDisplay
     }
@@ -117,7 +117,7 @@ extension DataViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DataBarCell.identifier, for: indexPath) as! DataBarCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CasesBarCell.identifier, for: indexPath) as! CasesBarCell
         
         cell.color = colorForRow(indexPath.section)
         
@@ -128,7 +128,7 @@ extension DataViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let cell = collectionView.dequeueReusableSupplementaryView(ofKind: DataViewController.sectionHeaderElementKind, withReuseIdentifier: DataView.identifier, for: indexPath) as! DataView
+        let cell = collectionView.dequeueReusableSupplementaryView(ofKind: CasesViewController.sectionHeaderElementKind, withReuseIdentifier: CasesView.identifier, for: indexPath) as! CasesView
         
         cell.color = colorForRow(indexPath.section)
         
@@ -144,6 +144,7 @@ private extension Country {
     
     func height(index: Int, height: CGFloat) -> CGFloat {
         let cases = self.newCases()
+        guard !cases.isEmpty else { return 0 }
         
         let confirmed = cases[index]
         

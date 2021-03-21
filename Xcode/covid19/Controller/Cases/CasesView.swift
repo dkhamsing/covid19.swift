@@ -8,8 +8,8 @@
 
 import UIKit
 
-class DataView: UICollectionReusableView {
-    static let identifier = "DataCell"
+class CasesView: UICollectionReusableView {
+    static let identifier = "CasesView"
     
     var color = UIColor.black
     
@@ -31,7 +31,7 @@ class DataView: UICollectionReusableView {
     }
 }
 
-private extension DataView {
+private extension CasesView {
     func configure() {
         [countryLabel, casesLabel].forEach { self.autolayoutAddSubview($0) }
         
@@ -52,7 +52,7 @@ private extension DataView {
     }
 }
 
-extension DataView {
+extension CasesView {
     func configure(_ country: Country) {
         countryLabel.text = country.country
         casesLabel.attributedText = country.confirmedAttributedText(color: color)
@@ -67,7 +67,7 @@ private extension Country {
         let titleAttribute: [NSAttributedString.Key: Any] = [
             .paragraphStyle: paragraphStyle,
             .foregroundColor: color,
-            .font: UIFont.monospacedSystemFont(ofSize: 64, weight: .regular)
+            .font: UIFont.monospacedSystemFont(ofSize: 44, weight: .regular)
         ]
         
         let numberFormatter = NumberFormatter()

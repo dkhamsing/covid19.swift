@@ -1,5 +1,5 @@
 //
-//  DataBarCell.swift
+//  CasesBarCell.swift
 //  covid19
 //
 //  Created by Daniel on 4/9/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DataBarCell: UICollectionViewCell {
+class CasesBarCell: UICollectionViewCell {
     static let identifier = "DataBarCell"
 
     var color = UIColor.black
@@ -31,7 +31,7 @@ class DataBarCell: UICollectionViewCell {
     }
 }
 
-private extension DataBarCell {
+private extension CasesBarCell {
     func configure() {
         self.autolayoutAddSubview(barView)
 
